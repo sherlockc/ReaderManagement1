@@ -1,15 +1,16 @@
 package domain;
 
 import java.util.*;
+import domain.Reader;
 
 public class PageBean {
     private int pc; //the page code
-    private int tp; //the total page
+    //private int tp; //the total page
     private int tr; //the total record
     private int pr; //the page record
     private String url;
 
-    private List<Object> beanList = new ArrayList<>();
+    private List<Reader> beanList = new ArrayList<>();
 
 
     public PageBean()
@@ -28,7 +29,7 @@ public class PageBean {
 
     public int getTp()
     {
-        tp = tr/pr;
+        int tp = tr/pr;
         return tr%pr == 0 ? tp: tp+1;
     }
 
@@ -62,12 +63,12 @@ public class PageBean {
         return url;
     }
 
-    public void setBeanList(List<Object> beanList)
+    public void setBeanList(List<Reader> beanList)
     {
         this.beanList = beanList;
     }
 
-    public List<Object> getBeanList()
+    public List<Reader> getBeanList()
     {
         return beanList;
     }
