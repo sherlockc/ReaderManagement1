@@ -29,18 +29,18 @@ public class ReaderDao {
             qr.update(sql, params);
         }
         catch(Exception e){
-            throw  new RuntimeException();
+            throw  new RuntimeException(e);
         }
     }
 
     public Reader find(String id)
     {
         try{
-            String sql = "SELECT * FORM t_reader WHERE id=?";
-            return qr.query(sql,new BeanHandler<Reader>(Reader.class),id);
+            String sql = "SELECT * FROM t_reader WHERE id=?";
+            return qr.query(sql, new BeanHandler<Reader>(Reader.class),id);
         }
         catch (Exception e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,11 +48,11 @@ public class ReaderDao {
     {
         try{
             String sql = "UPDATE t_reader SET name=?,gender=?,phone=?,email=?,description=? WHERE id=?";
-            Object[] params = {r.getName(),r.getGender(),r.getPhone(),r.getEmail(),r.getDescription(),r.getId()};
+            Object[] params = new Object[]{r.getName(),r.getGender(),r.getPhone(),r.getEmail(),r.getDescription(),r.getId()};
             qr.update(sql,params);
         }
         catch(Exception e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class ReaderDao {
             qr.update(sql,id);
         }
         catch (Exception e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,7 +87,7 @@ public class ReaderDao {
             return pb;
         }
         catch(Exception e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -98,57 +98,60 @@ public class ReaderDao {
             pb.setPc(pc);
             pb.setPr(pr);
 
-            StringBuilder sql = new StringBuilder("SELECT * FROM t_reader WHERE 1=1");
+            StringBuilder cntsql = new StringBuilder("SELECT COUNT(*) FROM t_reader");
+            StringBuilder wheresql = new StringBuilder(" WHERE 1 = 1");
             List<Object> params = new ArrayList<>();
 
             String name = r.getName();
             if(name != null && !name.trim().isEmpty())
             {
-                sql.append(" AND name=?");
+                wheresql.append(" AND name LIKE ?");
                 params.add("%" + name + "%");
             }
 
             String gender = r.getGender();
             if(gender != null && !gender.trim().isEmpty())
             {
-                sql.append(" AND gender=?");
+                wheresql.append(" AND gender=?");
                 params.add(gender);
             }
 
             String phone = r.getPhone();
             if(phone != null && !phone.trim().isEmpty())
             {
-                sql.append(" AND phone=?");
+                wheresql.append(" AND phone LIKE ?");
                 params.add("%" + phone + "%");
             }
 
             String email = r.getEmail();
             if(email != null && !email.trim().isEmpty())
             {
-                sql.append(" AND email=?");
+                wheresql.append(" AND email LIKE ?");
                 params.add("%" + email + "%");
             }
 
             String description = r.getDescription();
             if(description != null && !description.trim().isEmpty())
             {
-                sql.append("AND description=?");
+                wheresql.append("AND description=?");
                 params.add("%" + description + "%");
             }
 
-            String s = sql.toString();
-            int tr = (int)qr.query(s,new ScalarHandler(),params.toArray());
+            Number number = (Number)qr.query(cntsql.append(wheresql).toString(),new ScalarHandler(),params.toArray());
+            int tr = number.intValue();
             pb.setTr(tr);
 
-            s = "SELECT * FROM t_reader LIMIT ?,?";
-            Object[] p = {(pc - 1)*pr,pr};
-            List<Reader> beanList = qr.query(s,new BeanListHandler<Reader>(Reader.class),p);
+            StringBuilder initsql = new StringBuilder("SELECT * FROM t_reader");
+            StringBuilder limitsql = new StringBuilder(" LIMIT ?,?");
+            params.add((pc-1)*pr);
+            params.add(pr);
+            List<Reader> beanList = qr.query(initsql.append(wheresql).append(limitsql).toString(),new BeanListHandler<Reader>(Reader.class),params.toArray());
             pb.setBeanList(beanList);
             return pb;
 
         }
         catch(Exception e){
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

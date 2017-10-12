@@ -11,6 +11,8 @@
     <title>msg</title>
 </head>
 <body>
+<div align="center">
 ${msg}
+</div>
 </body>
 </html>

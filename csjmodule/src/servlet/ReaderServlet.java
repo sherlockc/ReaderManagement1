@@ -3,6 +3,7 @@ package servlet;
 import java.util.*;
 import cn.itcast.commons.CommonUtils;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import service.ReaderService;
 import domain.Reader;
@@ -61,7 +62,7 @@ public class ReaderServlet extends BaseServlet{
         PageBean pageBean = readerService.findAll(pc,pr);
         String url = getUrl(request);
         pageBean.setUrl(url);
-        request.setAttribute("pageBean",pageBean);
+        request.setAttribute("pb",pageBean);
         return "/list.jsp";
     }
 
@@ -70,10 +71,11 @@ public class ReaderServlet extends BaseServlet{
         int pc = getPc(request);
         int pr = 10;
         Reader r = CommonUtils.toBean(request.getParameterMap(), Reader.class);
+        request.setAttribute("Reader",r);
         PageBean pageBean = readerService.query(r,pc,pr);
         String url = getUrl(request);
         pageBean.setUrl(url);
-        request.setAttribute("pageBean",pageBean);
+        request.setAttribute("pb",pageBean);
         return "/list.jsp";
     }
 
@@ -98,5 +100,30 @@ public class ReaderServlet extends BaseServlet{
         }
 
         return requestUri + "?" + queryString;
+    }
+
+    private Reader encoding(Reader r) throws UnsupportedEncodingException {
+        String name = r.getName();
+        String gender = r.getGender();
+        String phone = r.getPhone();
+        String email = r.getEmail();
+
+        if (name != null && !name.trim().isEmpty()) {
+            name = new String(name.getBytes("ISO-8859-1"), "utf-8");
+            r.setName(name);
+        }
+        if (gender != null && !gender.trim().isEmpty()) {
+            gender = new String(gender.getBytes("ISO-8859-1"), "utf-8");
+            r.setGender(gender);
+        }
+        if (phone != null && !phone.trim().isEmpty()) {
+            phone = new String(phone.getBytes("ISO-8859-1"), "utf-8");
+            r.setPhone(phone);
+        }
+        if (email != null && !email.trim().isEmpty()) {
+            email = new String(email.getBytes("ISO-8859-1"), "utf-8");
+            r.setEmail(email);
+        }
+        return r;
     }
 }

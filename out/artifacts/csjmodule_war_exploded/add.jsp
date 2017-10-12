@@ -12,6 +12,7 @@
     <title>add</title>
 </head>
 <body>
+<div align="center">
 <h3>添加</h3>
 <form action="/ReaderServlet" method="post">
     <input type = "hidden" name = "method" value = "add">
@@ -30,5 +31,6 @@
         <button type = "reset">重置</button>
     </div>
 </form>
+</div>
 </body>
 </html>
