@@ -15,7 +15,7 @@ import cn.itcast.jdbc.TxQueryRunner;
 
 public class ReaderDao {
 
-    QueryRunner qr = new TxQueryRunner();
+    private QueryRunner qr = new TxQueryRunner();
 
     public ReaderDao()
     {
@@ -74,9 +74,10 @@ public class ReaderDao {
             pb.setPc(pc);
             pb.setPr(pr);
 
-            String sql = "SELECT * FROM t_reader";
-            int tr = (int)qr.query(sql,new ScalarHandler());
+            String sql = "SELECT COUNT(*) FROM t_reader";
+            Number number = (Number)qr.query(sql,new ScalarHandler());
 
+            int tr = number.intValue();
             pb.setTr(tr);
 
             sql = "SELECT * FROM t_reader LIMIT ?,?";
@@ -103,35 +104,35 @@ public class ReaderDao {
             String name = r.getName();
             if(name != null && !name.trim().isEmpty())
             {
-                sql.append("AND name = ?");
+                sql.append(" AND name=?");
                 params.add("%" + name + "%");
             }
 
             String gender = r.getGender();
             if(gender != null && !gender.trim().isEmpty())
             {
-                sql.append("AND gender = ?");
+                sql.append(" AND gender=?");
                 params.add(gender);
             }
 
             String phone = r.getPhone();
             if(phone != null && !phone.trim().isEmpty())
             {
-                sql.append("AND phone = ?");
+                sql.append(" AND phone=?");
                 params.add("%" + phone + "%");
             }
 
             String email = r.getEmail();
             if(email != null && !email.trim().isEmpty())
             {
-                sql.append("AND email = ?");
+                sql.append(" AND email=?");
                 params.add("%" + email + "%");
             }
 
             String description = r.getDescription();
             if(description != null && !description.trim().isEmpty())
             {
-                sql.append("AND description = ?");
+                sql.append("AND description=?");
                 params.add("%" + description + "%");
             }
 

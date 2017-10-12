@@ -2,6 +2,8 @@ package servlet;
 
 import java.util.*;
 import cn.itcast.commons.CommonUtils;
+import java.io.IOException;
+
 import service.ReaderService;
 import domain.Reader;
 import domain.PageBean;
@@ -10,7 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
+
 
 
 import cn.itcast.servlet.BaseServlet;
@@ -28,7 +30,7 @@ public class ReaderServlet extends BaseServlet{
         return "/msg.jsp";
     }
 
-    public String PreEdit(HttpServletRequest request) throws ServletException,IOException
+    public String preEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         String id = request.getParameter("id");
         Reader r = readerService.find(id);
@@ -36,7 +38,7 @@ public class ReaderServlet extends BaseServlet{
         return "/edit.jsp";
     }
 
-    public String edit(HttpServletRequest request) throws ServletException,IOException
+    public String edit(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         Reader r = CommonUtils.toBean(request.getParameterMap(), Reader.class);
         readerService.edit(r);
@@ -44,7 +46,7 @@ public class ReaderServlet extends BaseServlet{
         return "/msg.jsp";
     }
 
-    public String delete(HttpServletRequest request) throws ServletException,IOException
+    public String delete(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         String id = request.getParameter("id");
         readerService.delete(id);
@@ -52,20 +54,26 @@ public class ReaderServlet extends BaseServlet{
         return "/msg.jsp";
     }
 
-    public String findAll(HttpServletRequest request) throws ServletException,IOException
+    public String findAll(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         int pc = getPc(request);
         int pr = 10;
-        readerService.findAll(pc,pr);
+        PageBean pageBean = readerService.findAll(pc,pr);
+        String url = getUrl(request);
+        pageBean.setUrl(url);
+        request.setAttribute("pageBean",pageBean);
         return "/list.jsp";
     }
 
-    public String query(HttpServletRequest request) throws ServletException,IOException
+    public String query(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         int pc = getPc(request);
         int pr = 10;
         Reader r = CommonUtils.toBean(request.getParameterMap(), Reader.class);
-        readerService.query(r,pc,pr);
+        PageBean pageBean = readerService.query(r,pc,pr);
+        String url = getUrl(request);
+        pageBean.setUrl(url);
+        request.setAttribute("pageBean",pageBean);
         return "/list.jsp";
     }
 

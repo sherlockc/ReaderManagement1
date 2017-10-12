@@ -12,7 +12,7 @@
 </head>
 <body>
     <div><a href = "/add.jsp">Add reader</a></div>
-    <div><a href = "/findAll.jsp">Find all reader</a></body></div>
-    <div><a href = "/query.jsp">query</a></div>
+    <div><a href = "/ReaderServlet?method=findAll">Find all reader</a></div>
+    <div><a href = "/query.jsp">Query</a></div>
 </body>
 </html>

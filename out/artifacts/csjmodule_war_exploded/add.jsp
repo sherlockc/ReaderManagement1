@@ -13,7 +13,7 @@
 </head>
 <body>
 <h3>添加</h3>
-<form action="<c:url value='/ReaderServlet'/>" method="post">
+<form action="/ReaderServlet" method="post">
     <input type = "hidden" name = "method" value = "add">
     <div>姓名<input type = "text" name = "name"/></div>
     <div>
