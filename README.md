@@ -2,4 +2,4 @@
 
 ## 使用的技术
 
-mysql+BaseServlet+JSP
+mysql+c3p0+BaseServlet+JSP
