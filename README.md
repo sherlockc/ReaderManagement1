@@ -1,10 +1,10 @@
 # ReaderManagement
 
 ## 开发技术
-- 前端:jsp
-- 后台:BaseServlet
+- 前端：jsp
+- 后台：BaseServlet
 - 数据库：mysql
-- 数据库连接:c3p0
+- 数据库连接：c3p0
 
 ## 功能
 - 添加读者
