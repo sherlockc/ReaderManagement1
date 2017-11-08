@@ -1,5 +1,5 @@
 # ReaderManagement
 
-##使用的技术
+## 使用的技术
 
 mysql+BaseServlet+JSP
